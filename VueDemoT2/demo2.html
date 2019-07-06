@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="js/vue.min.js"></script>
+
+</head>
+<body>
+    <div id="app">
+        <my-comp></my-comp>
+        <new-comp></new-comp>
+        <!--3.使用组件-->
+        <list-comp></list-comp>
+    </div>
+    <script type="text/x-template" id="mycomp">
+        <div>
+            <h1>新组件</h1>
+        </div>
+    </script>
+    <template id="newcomp">
+        <div>
+            <h1>新组件(template)</h1>
+        </div>
+    </template>
+    <!--1.声明组件模板-->
+    <template id="showlist">
+        <div>
+            <!--使用子组件-->
+            <sub-comp title="三国人物"></sub-comp>
+            <ul>
+                <li v-for="item in list">
+                    {{ item }}
+                </li>
+            </ul>
+        </div>
+    </template>
+    <script>
+        var vue = new Vue({
+            el: "#app",
+            components: {
+                //2.注册组件
+                "list-comp": {
+                    //提供数据
+                    data: function () {
+                        return {
+                            list: [
+                                "刘备",
+                                "曹操",
+                                "孙权"
+                            ]
+                        }
+                    },
+                    //提供模板
+                    template: "#showlist",
+                    //注册子组件
+                    components: {
+                        "sub-comp": {
+                            //声明组件属性
+                            props:["title"],
+                            template:"<h1>{{ title }}</h1>"
+                        }
+                    }
+                },
+                "my-comp": {
+                    template: "#mycomp"
+                },
+                "new-comp": {
+                    template: "#newcomp"
+                },
+            }
+        })
+    </script>
+</body>
+</html>

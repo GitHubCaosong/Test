@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <script src="js/vue.min.js"></script>
+</head>
+<body>
+    <div id="app">
+        <input type="text" v-model="msg" />
+        <p>
+            Hello {{ msg | uppercase}} !
+        </p>
+        <p>
+            {{ newMsg | uppercase }}
+        </p>
+        <my-comp></my-comp>
+        <my-newcomp></my-newcomp>
+    </div>
+    <script>
+        //声明全局过滤器
+        Vue.filter("uppercase", function (value) {
+            var val = value.toString();
+            return val.toUpperCase();
+        });
+        //声明全局组件
+        Vue.component("my-comp", {
+            template: "<h1>我的组件</h1>"
+        });
+        var vue = new Vue({
+            el: "#app",
+            data: {
+                msg:"World"
+            },
+            created: function () {
+                console.log("vue初始化完成");
+            },
+            mounted: function () {
+                console.log("vue mounted钩子监听变化");
+            },
+            updated: function () {
+                console.log("Dom更新完成")
+            },
+            computed: {
+                newMsg: function () {
+                    return this.msg.split("").reverse().join("");
+                }
+            },
+            components: {
+                //局部组件
+                "my-newcomp": {
+                    template:"<h2>新的组件</h2>"
+                }
+            }
+        });
+    </script>
+</body>
+</html>

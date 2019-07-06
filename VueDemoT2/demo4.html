@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>商品查询</title>
+    <script src="js/vue.min.js"></script>
+</head>
+<body>
+    <!--计算属性和组件-->
+    <div id="app">
+        <p>
+            <label for="txtKey">商品名称：</label>
+            <input type="text" id="txtKey" v-model="key" />
+            <prod-list v-bind:namekey="key"></prod-list>
+        </p>
+
+    </div>
+    <template id="prodlist">
+        <div>
+            <table>
+                <tr>
+                    <th>名称</th>
+                    <th>价格</th>
+                </tr>
+                <tr v-for="item in plist">
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.price }}</td>
+                </tr>
+            </table>
+        </div>
+    </template>
+    <script>
+        var vue = new Vue({
+            el: "#app",
+            data: {
+                key:""
+            },
+            components: {
+                "prod-list":{
+                    props: ["namekey"],
+                    data: function () {
+                        return {                            
+                            list: [
+                                { name: "iPhone X", price: "8000" },
+                                { name: "HW P30", price: "4000" },
+                                { name: "HW M20", price: "2000" },
+                            ]
+                        }
+                    },
+                    //设置组件内容模板
+                    template:"#prodlist",
+                    computed: {
+                        plist: function () {
+                            //过滤查询
+                            var nkey = this.namekey;
+                            var pdList = this.list;
+                            return pdList.filter(function (item) {
+                                return item.name.indexOf(nkey) != -1;
+                            });
+                        }
+                    }
+
+                }
+            }
+        })
+    </script>
+</body>
+</html>
